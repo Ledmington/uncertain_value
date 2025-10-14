@@ -2,6 +2,7 @@
 
 #include <uncertain_value/ast.hpp>
 
+#include <memory>
 #include <ostream>
 #include <random>
 
@@ -70,7 +71,7 @@ class nominal_uncertain_value {
    private:
 	double value_;
 	double error_;
-	node tree_;
+	node &tree_;
 };
 
 namespace std {

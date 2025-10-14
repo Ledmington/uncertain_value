@@ -17,10 +17,9 @@
 
 nominal_uncertain_value::nominal_uncertain_value(const double value,
 												 const double error)
-	: value_(value), error_(std::abs(error)) {
+	: value_(value), error_(std::abs(error)), tree_(creation(value_, error_)) {
 	UV_ASSERT(std::isfinite(value));
 	UV_ASSERT(std::isfinite(error));
-	this->tree_ = node();
 }
 
 nominal_uncertain_value::nominal_uncertain_value(const double value)
@@ -44,6 +43,7 @@ nominal_uncertain_value &nominal_uncertain_value::operator+=(
 	this->error_ += other.error_;
 	UV_ASSERT(std::isfinite(this->value_));
 	UV_ASSERT(std::isfinite(this->error_));
+	this->tree_ = plus_equals(this->tree_, other.tree_);
 	return *this;
 }
 
@@ -203,7 +203,8 @@ bool nominal_uncertain_value::contains_zero() const {
 
 std::string nominal_uncertain_value::tree() const {
 	std::ostringstream oss;
-	oss << "<root>";
+	oss << "<root>\n";
+	tree_.to_string(oss, "└─");
 	return oss.str();
 }
 
