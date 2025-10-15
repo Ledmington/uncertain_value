@@ -69,9 +69,13 @@ class nominal_uncertain_value {
 	std::string tree() const;
 
    private:
+	nominal_uncertain_value(
+		const double &value, const double &error,
+		const std::shared_ptr<node> &tree);	 // should this be protected?
+
 	double value_;
 	double error_;
-	node &tree_;
+	std::shared_ptr<node> tree_;
 };
 
 namespace std {
