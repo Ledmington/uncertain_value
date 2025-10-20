@@ -43,8 +43,10 @@ nominal_uncertain_value nominal_uncertain_value::operator-() const {
 
 [[nodiscard]] nominal_uncertain_value operator+(
 	const nominal_uncertain_value &a, const nominal_uncertain_value &b) {
-	return nominal_uncertain_value(a.value_ + b.value_, a.error_ + b.error_,
-								   std::make_shared<plus>(a.tree_, b.tree_));
+	return nominal_uncertain_value(
+		a.value_ + b.value_, a.error_ + b.error_,
+		std::make_shared<double_children_node<double_children_node_type::PLUS>>(
+			a.tree_, b.tree_));
 }
 
 nominal_uncertain_value &nominal_uncertain_value::operator+=(
@@ -53,14 +55,19 @@ nominal_uncertain_value &nominal_uncertain_value::operator+=(
 	this->error_ += other.error_;
 	UV_ASSERT(std::isfinite(this->value_));
 	UV_ASSERT(std::isfinite(this->error_));
-	this->tree_ = std::make_shared<plus_equals>(this->tree_, other.tree_);
+	this->tree_ = std::make_shared<
+		double_children_node<double_children_node_type::PLUS_EQUALS>>(
+		this->tree_, other.tree_);
 	return *this;
 }
 
 [[nodiscard]] nominal_uncertain_value operator-(
 	const nominal_uncertain_value &a, const nominal_uncertain_value &b) {
-	return nominal_uncertain_value(a.value_ - b.value_, a.error_ - b.error_,
-								   std::make_shared<minus>(a.tree_, b.tree_));
+	return nominal_uncertain_value(
+		a.value_ - b.value_, a.error_ - b.error_,
+		std::make_shared<
+			double_children_node<double_children_node_type::MINUS>>(a.tree_,
+																	b.tree_));
 }
 
 nominal_uncertain_value &nominal_uncertain_value::operator-=(
@@ -69,17 +76,21 @@ nominal_uncertain_value &nominal_uncertain_value::operator-=(
 	this->error_ = std::abs(this->error_ - other.error_);
 	UV_ASSERT(std::isfinite(this->value_));
 	UV_ASSERT(std::isfinite(this->error_));
-	this->tree_ = std::make_shared<minus_equals>(this->tree_, other.tree_);
+	this->tree_ = std::make_shared<
+		double_children_node<double_children_node_type::MINUS_EQUALS>>(
+		this->tree_, other.tree_);
 	return *this;
 }
 
 [[nodiscard]] nominal_uncertain_value operator*(
 	const nominal_uncertain_value &a, const nominal_uncertain_value &b) {
-	return nominal_uncertain_value(a.value_ * b.value_,
-								   std::abs(a.value_) * b.error_ +
-									   std::abs(b.value_) * a.error_ +
-									   a.error_ * b.error_,
-								   std::make_shared<times>(a.tree_, b.tree_));
+	return nominal_uncertain_value(
+		a.value_ * b.value_,
+		std::abs(a.value_) * b.error_ + std::abs(b.value_) * a.error_ +
+			a.error_ * b.error_,
+		std::make_shared<
+			double_children_node<double_children_node_type::TIMES>>(a.tree_,
+																	b.tree_));
 }
 
 nominal_uncertain_value &nominal_uncertain_value::operator*=(
@@ -92,7 +103,9 @@ nominal_uncertain_value &nominal_uncertain_value::operator*=(
 	this->error_ = new_error;
 	UV_ASSERT(std::isfinite(this->value_));
 	UV_ASSERT(std::isfinite(this->error_));
-	this->tree_ = std::make_shared<times_equals>(this->tree_, other.tree_);
+	this->tree_ = std::make_shared<
+		double_children_node<double_children_node_type::TIMES_EQUALS>>(
+		this->tree_, other.tree_);
 	return *this;
 }
 
@@ -104,7 +117,9 @@ nominal_uncertain_value &nominal_uncertain_value::operator*=(
 		(a.error_ / std::abs(b.value_)) +
 			((std::abs(a.value_) * b.error_) / (b.value_ * b.value_)) +
 			((a.error_ * b.error_) / (b.value_ * b.value_)),
-		std::make_shared<divide>(a.tree_, b.tree_));
+		std::make_shared<
+			double_children_node<double_children_node_type::DIVIDE>>(a.tree_,
+																	 b.tree_));
 }
 
 nominal_uncertain_value &nominal_uncertain_value::operator/=(
@@ -120,7 +135,9 @@ nominal_uncertain_value &nominal_uncertain_value::operator/=(
 	this->error_ = new_error;
 	UV_ASSERT(std::isfinite(this->value_));
 	UV_ASSERT(std::isfinite(this->error_));
-	this->tree_ = std::make_shared<divide_equals>(this->tree_, other.tree_);
+	this->tree_ = std::make_shared<
+		double_children_node<double_children_node_type::DIVIDE_EQUALS>>(
+		this->tree_, other.tree_);
 	return *this;
 }
 

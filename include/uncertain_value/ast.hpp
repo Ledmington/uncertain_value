@@ -1,5 +1,6 @@
 #pragma once
 
+#include <cstdint>
 #include <memory>
 #include <ostream>
 
@@ -21,106 +22,39 @@ class creation final : public node {
 	double error_;
 };
 
-// TODO: refactor plus, minus, times and divide into a common node
-class plus final : public node {
+enum class double_children_node_type : std::uint8_t {
+	PLUS,
+	MINUS,
+	TIMES,
+	DIVIDE,
+	PLUS_EQUALS,
+	MINUS_EQUALS,
+	TIMES_EQUALS,
+	DIVIDE_EQUALS
+};
+
+std::ostream& operator<<(std::ostream& os,
+						 const double_children_node_type& node_type);
+
+template <double_children_node_type node_type>
+class double_children_node final : public node {
    public:
-	plus(const std::shared_ptr<node>& lhs, const std::shared_ptr<node>& rhs);
+	double_children_node(const std::shared_ptr<node>& lhs,
+						 const std::shared_ptr<node>& rhs)
+		: lhs_(lhs), rhs_(rhs) {}
 
 	void to_string(std::ostream& os, const std::string& indent,
-				   const std::string& continuation_indent) const override;
+				   const std::string& continuation_indent) const override {
+		os << indent << node_type << "\n";
+		lhs_->to_string(os, continuation_indent + "├─",
+						continuation_indent + "│ ");
+		rhs_->to_string(os, continuation_indent + "└─",
+						continuation_indent + "  ");
+	}
 
    private:
 	std::shared_ptr<node> lhs_;
 	std::shared_ptr<node> rhs_;
-};
-
-class minus final : public node {
-   public:
-	minus(const std::shared_ptr<node>& lhs, const std::shared_ptr<node>& rhs);
-
-	void to_string(std::ostream& os, const std::string& indent,
-				   const std::string& continuation_indent) const override;
-
-   private:
-	std::shared_ptr<node> lhs_;
-	std::shared_ptr<node> rhs_;
-};
-
-class times final : public node {
-   public:
-	times(const std::shared_ptr<node>& lhs, const std::shared_ptr<node>& rhs);
-
-	void to_string(std::ostream& os, const std::string& indent,
-				   const std::string& continuation_indent) const override;
-
-   private:
-	std::shared_ptr<node> lhs_;
-	std::shared_ptr<node> rhs_;
-};
-
-class divide final : public node {
-   public:
-	divide(const std::shared_ptr<node>& lhs, const std::shared_ptr<node>& rhs);
-
-	void to_string(std::ostream& os, const std::string& indent,
-				   const std::string& continuation_indent) const override;
-
-   private:
-	std::shared_ptr<node> lhs_;
-	std::shared_ptr<node> rhs_;
-};
-
-// TODO: refactor all the XXX_equals classes into a common one
-class plus_equals final : public node {
-   public:
-	plus_equals(const std::shared_ptr<node>& base,
-				const std::shared_ptr<node>& increment);
-
-	void to_string(std::ostream& os, const std::string& indent,
-				   const std::string& continuation_indent) const override;
-
-   private:
-	std::shared_ptr<node> base_;
-	std::shared_ptr<node> increment_;
-};
-
-class minus_equals final : public node {
-   public:
-	minus_equals(const std::shared_ptr<node>& base,
-				 const std::shared_ptr<node>& increment);
-
-	void to_string(std::ostream& os, const std::string& indent,
-				   const std::string& continuation_indent) const override;
-
-   private:
-	std::shared_ptr<node> base_;
-	std::shared_ptr<node> increment_;
-};
-
-class times_equals final : public node {
-   public:
-	times_equals(const std::shared_ptr<node>& base,
-				 const std::shared_ptr<node>& increment);
-
-	void to_string(std::ostream& os, const std::string& indent,
-				   const std::string& continuation_indent) const override;
-
-   private:
-	std::shared_ptr<node> base_;
-	std::shared_ptr<node> increment_;
-};
-
-class divide_equals final : public node {
-   public:
-	divide_equals(const std::shared_ptr<node>& base,
-				  const std::shared_ptr<node>& increment);
-
-	void to_string(std::ostream& os, const std::string& indent,
-				   const std::string& continuation_indent) const override;
-
-   private:
-	std::shared_ptr<node> base_;
-	std::shared_ptr<node> increment_;
 };
 
 class negate final : public node {

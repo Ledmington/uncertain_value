@@ -10,97 +10,35 @@ void creation::to_string(std::ostream& os, const std::string& indent,
 	os << indent << "creation ( " << value_ << " ± " << error_ << " )\n";
 }
 
-plus::plus(const std::shared_ptr<node>& lhs, const std::shared_ptr<node>& rhs)
-	: lhs_(lhs), rhs_(rhs) {}
-
-void plus::to_string(std::ostream& os, const std::string& indent,
-					 const std::string& continuation_indent) const {
-	os << indent << "plus\n";
-	lhs_->to_string(os, continuation_indent + "├─", continuation_indent + "│ ");
-	rhs_->to_string(os, continuation_indent + "└─", continuation_indent + "  ");
-}
-
-minus::minus(const std::shared_ptr<node>& lhs, const std::shared_ptr<node>& rhs)
-	: lhs_(lhs), rhs_(rhs) {}
-
-void minus::to_string(std::ostream& os, const std::string& indent,
-					  const std::string& continuation_indent) const {
-	os << indent << "minus\n";
-	lhs_->to_string(os, continuation_indent + "├─", continuation_indent + "│ ");
-	rhs_->to_string(os, continuation_indent + "└─", continuation_indent + "  ");
-}
-
-times::times(const std::shared_ptr<node>& lhs, const std::shared_ptr<node>& rhs)
-	: lhs_(lhs), rhs_(rhs) {}
-
-void times::to_string(std::ostream& os, const std::string& indent,
-					  const std::string& continuation_indent) const {
-	os << indent << "times\n";
-	lhs_->to_string(os, continuation_indent + "├─", continuation_indent + "│ ");
-	rhs_->to_string(os, continuation_indent + "└─", continuation_indent + "  ");
-}
-
-divide::divide(const std::shared_ptr<node>& lhs,
-			   const std::shared_ptr<node>& rhs)
-	: lhs_(lhs), rhs_(rhs) {}
-
-void divide::to_string(std::ostream& os, const std::string& indent,
-					   const std::string& continuation_indent) const {
-	os << indent << "divide\n";
-	lhs_->to_string(os, continuation_indent + "├─", continuation_indent + "│ ");
-	rhs_->to_string(os, continuation_indent + "└─", continuation_indent + "  ");
-}
-
-plus_equals::plus_equals(const std::shared_ptr<node>& base,
-						 const std::shared_ptr<node>& increment)
-	: base_(base), increment_(increment) {}
-
-void plus_equals::to_string(std::ostream& os, const std::string& indent,
-							const std::string& continuation_indent) const {
-	os << indent << "plus_equals\n";
-	base_->to_string(os, continuation_indent + "├─",
-					 continuation_indent + "│ ");
-	increment_->to_string(os, continuation_indent + "└─",
-						  continuation_indent + "  ");
-}
-
-minus_equals::minus_equals(const std::shared_ptr<node>& base,
-						   const std::shared_ptr<node>& increment)
-	: base_(base), increment_(increment) {}
-
-void minus_equals::to_string(std::ostream& os, const std::string& indent,
-							 const std::string& continuation_indent) const {
-	os << indent << "minus_equals\n";
-	base_->to_string(os, continuation_indent + "├─",
-					 continuation_indent + "│ ");
-	increment_->to_string(os, continuation_indent + "└─",
-						  continuation_indent + "  ");
-}
-
-times_equals::times_equals(const std::shared_ptr<node>& base,
-						   const std::shared_ptr<node>& increment)
-	: base_(base), increment_(increment) {}
-
-void times_equals::to_string(std::ostream& os, const std::string& indent,
-							 const std::string& continuation_indent) const {
-	os << indent << "times_equals\n";
-	base_->to_string(os, continuation_indent + "├─",
-					 continuation_indent + "│ ");
-	increment_->to_string(os, continuation_indent + "└─",
-						  continuation_indent + "  ");
-}
-
-divide_equals::divide_equals(const std::shared_ptr<node>& base,
-							 const std::shared_ptr<node>& increment)
-	: base_(base), increment_(increment) {}
-
-void divide_equals::to_string(std::ostream& os, const std::string& indent,
-							  const std::string& continuation_indent) const {
-	os << indent << "divide_equals\n";
-	base_->to_string(os, continuation_indent + "├─",
-					 continuation_indent + "│ ");
-	increment_->to_string(os, continuation_indent + "└─",
-						  continuation_indent + "  ");
+std::ostream& operator<<(std::ostream& os,
+						 const double_children_node_type& node_type) {
+	switch (node_type) {
+		case double_children_node_type::PLUS:
+			os << "plus";
+			break;
+		case double_children_node_type::MINUS:
+			os << "minus";
+			break;
+		case double_children_node_type::TIMES:
+			os << "times";
+			break;
+		case double_children_node_type::DIVIDE:
+			os << "divide";
+			break;
+		case double_children_node_type::PLUS_EQUALS:
+			os << "plus_equals";
+			break;
+		case double_children_node_type::MINUS_EQUALS:
+			os << "minus_equals";
+			break;
+		case double_children_node_type::TIMES_EQUALS:
+			os << "times_equals";
+			break;
+		case double_children_node_type::DIVIDE_EQUALS:
+			os << "divide_equals";
+			break;
+	};
+	return os;
 }
 
 negate::negate(const std::shared_ptr<node>& inner) : inner_(inner) {}
