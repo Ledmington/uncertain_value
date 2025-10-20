@@ -19,15 +19,15 @@ jobs:
       - name: Install dependencies
         run: |
           sudo apt-get update
-          sudo apt-get install -y cmake make gcc
+          sudo apt-get install -y cmake make g++
 
-      - name: Configure (${{ matrix.build_type }}) build
+      - name: Configure ${{ matrix.build_type }} build
         run: |
           cmake -S . -B build-${{ matrix.build_type }} \
                 -DCMAKE_BUILD_TYPE=${{ matrix.build_type }}
 
-      - name: (${{ matrix.build_type }}) build
+      - name: ${{ matrix.build_type }} build
         run: cmake --build build-${{ matrix.build_type }} -j$(nproc) -- all
 
-      - name: Test (${{ matrix.build_type }}) build
+      - name: Test ${{ matrix.build_type }} build
         run: ctest --test-dir build-${{ matrix.build_type }} --output-on-failure
