@@ -37,7 +37,8 @@ nominal_uncertain_value::nominal_uncertain_value(
 	: value_(value), error_(error), tree_(tree) {}
 
 nominal_uncertain_value nominal_uncertain_value::operator-() const {
-	return nominal_uncertain_value(-value_, error_);
+	return nominal_uncertain_value(-value_, error_,
+								   std::make_shared<negate>(tree_));
 }
 
 [[nodiscard]] nominal_uncertain_value operator+(

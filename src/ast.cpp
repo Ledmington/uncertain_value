@@ -102,3 +102,12 @@ void divide_equals::to_string(std::ostream& os, const std::string& indent,
 	increment_->to_string(os, continuation_indent + "└─",
 						  continuation_indent + "  ");
 }
+
+negate::negate(const std::shared_ptr<node>& inner) : inner_(inner) {}
+
+void negate::to_string(std::ostream& os, const std::string& indent,
+					   const std::string& continuation_indent) const {
+	os << indent << "negate\n";
+	inner_->to_string(os, continuation_indent + "└─",
+					  continuation_indent + "  ");
+}

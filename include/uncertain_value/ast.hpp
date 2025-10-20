@@ -122,3 +122,14 @@ class divide_equals final : public node {
 	std::shared_ptr<node> base_;
 	std::shared_ptr<node> increment_;
 };
+
+class negate final : public node {
+   public:
+	negate(const std::shared_ptr<node>& inner);
+
+	void to_string(std::ostream& os, const std::string& indent,
+				   const std::string& continuation_indent) const override;
+
+   private:
+	std::shared_ptr<node> inner_;
+};
