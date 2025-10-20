@@ -133,3 +133,14 @@ class negate final : public node {
    private:
 	std::shared_ptr<node> inner_;
 };
+
+class absolute_value final : public node {
+   public:
+	absolute_value(const std::shared_ptr<node>& inner);
+
+	void to_string(std::ostream& os, const std::string& indent,
+				   const std::string& continuation_indent) const override;
+
+   private:
+	std::shared_ptr<node> inner_;
+};

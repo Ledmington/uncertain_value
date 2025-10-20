@@ -225,7 +225,9 @@ std::string nominal_uncertain_value::tree() const {
 }
 
 [[nodiscard]] nominal_uncertain_value nominal_uncertain_value::abs() const {
-	return nominal_uncertain_value(std::abs(value_), error_);
+	return nominal_uncertain_value(
+		std::abs(value_), error_,
+		std::make_shared<absolute_value>(this->tree_));
 }
 
 [[nodiscard]] nominal_uncertain_value nominal_uncertain_value::sqrt() const {

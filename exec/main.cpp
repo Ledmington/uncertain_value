@@ -12,7 +12,7 @@ int main() {
 	nominal_uncertain_value g(7.0, 0.02);
 
 	nominal_uncertain_value x =
-		(a + b) / (c - d) * (e + (a * b)) + 1.0 / (-f) - g;
+		(a + b) / (c - d) * (e + (a * b)) + 1.0 / (-f) - std::abs(g);
 
 	std::cout << x << "\n";
 	std::cout << x.tree() << "\n";

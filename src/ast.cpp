@@ -111,3 +111,13 @@ void negate::to_string(std::ostream& os, const std::string& indent,
 	inner_->to_string(os, continuation_indent + "└─",
 					  continuation_indent + "  ");
 }
+
+absolute_value::absolute_value(const std::shared_ptr<node>& inner)
+	: inner_(inner) {}
+
+void absolute_value::to_string(std::ostream& os, const std::string& indent,
+							   const std::string& continuation_indent) const {
+	os << indent << "absolute_value\n";
+	inner_->to_string(os, continuation_indent + "└─",
+					  continuation_indent + "  ");
+}
