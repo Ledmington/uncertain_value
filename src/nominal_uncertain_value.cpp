@@ -236,8 +236,8 @@ bool nominal_uncertain_value::contains_zero() const {
 
 std::string nominal_uncertain_value::tree() const {
 	std::ostringstream oss;
+	tree_->to_string(oss, "┌─", "  ");
 	oss << "<root>\n";
-	tree_->to_string(oss, "└─", "  ");
 	return oss.str();
 }
 

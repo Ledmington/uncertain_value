@@ -45,11 +45,11 @@ class double_children_node final : public node {
 
 	void to_string(std::ostream& os, const std::string& indent,
 				   const std::string& continuation_indent) const override {
-		os << indent << node_type << "\n";
+		rhs_->to_string(os, continuation_indent + "┌─",
+						continuation_indent + "  ");
 		lhs_->to_string(os, continuation_indent + "├─",
 						continuation_indent + "│ ");
-		rhs_->to_string(os, continuation_indent + "└─",
-						continuation_indent + "  ");
+		os << indent << node_type << "\n";
 	}
 
    private:
